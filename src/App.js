@@ -9,16 +9,12 @@ class Counter extends React.Component {
     static defaultProps = {
         good: 0,
         neutral: 0,
-        bad: 0,
-        total: 0,
-        positivePercentage: 0
+        bad: 0
     }
     state = {
       good: this.props.good,
       neutral: this.props.neutral,
-      bad: this.props.bad,
-      total: this.props.good + this.props.neutral + this.props.bad,
-      positivePercentage: (this.props.total===0)? 0 : Math.round((this.props.good * 100) / (this.props.good + this.props.neutral + this.props.bad))
+      bad: this.props.bad
     };
     incStats = (value) => {
         console.log(value);
@@ -27,23 +23,13 @@ class Counter extends React.Component {
                 [value]: prevState[value] + 1,
             };
         });
-        this.countTotalFeedback();
     };
-    countTotalFeedback = () => { 
-        this.setState(prevState => {
-            return {total : prevState.good+prevState.neutral+prevState.bad,}
-        });
-        this.countPositiveFeedbackPercentage();
-    };
-    countPositiveFeedbackPercentage = () => {
-        this.setState(prevState => {
-            return {positivePercentage: Math.round(prevState.good*100/prevState.total)}
-        });
-    };
-    
+       
     render() {
-        const { good , neutral , bad , total , positivePercentage } = this.state
-        const options = ['good','neutral','bad'];
+        const { good , neutral , bad } = this.state
+        const options = Object.getOwnPropertyNames(this.state);
+        const total = good + neutral + bad;
+        const positivePercentage = Math.round(good * 100 / total);
         return (
             <div className="Counter">
                 <Section title="Оставте свой отзыв.">
